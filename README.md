@@ -9,11 +9,6 @@ Need to register to Flower Care&trade; Smart Monitor App
 
 
 [![hacs_badge](https://img.shields.io/badge/HACS-Default-orange.svg?style=for-the-badge)](https://github.com/custom-components/hacs)
-[![GitHub Release][releases-shield]][releases]
-[![License][license-shield]](LICENSE)
-
-![Project Maintenance][maintenance-shield]
-[![BuyMeCoffee][buymecoffeebadge]][buymecoffee]
 
 _Home Assistant Plant monitor extended component, integrated with Flora care application plant informations._
 
@@ -131,7 +126,3 @@ Home Assistant Flora Panel
 
 [buymecoffee]: https://www.buymeacoffee.com/0D3WbkKrn
 [buymecoffeebadge]: https://img.shields.io/badge/buy%20me%20a%20coffee-donate-yellow.svg?style=for-the-badge
-[license-shield]: https://img.shields.io/github/license/custom-components/sensor.avanza_stock.svg?style=for-the-badge
-[maintenance-shield]: https://img.shields.io/badge/maintainer-Claes%20Hallström%20%40claha-blue.svg?style=for-the-badge
-[releases-shield]: https://img.shields.io/github/release/custom-components/sensor.avanza_stock.svg?style=for-the-badge
-[releases]: https://github.com/custom-components/sensor.avanza_stock/releases
