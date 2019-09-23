@@ -1,0 +1,8 @@
+{
+  "domain": "huahuacaocao",
+  "name": "Xiaomi mi flora and Flower Care Smart Monitor",
+  "documentation": "https://github.com/r-renato/hass-xiaomi-mi-flora-and-flower-care.git",
+  "dependencies": [],
+  "codeowners": ["@r-renato"],
+  "requirements": []
+}
