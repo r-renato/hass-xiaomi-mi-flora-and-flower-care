@@ -1,5 +1,12 @@
-The component use Flower Care&trade; Smart Monitor to retrieve flower information (http://www.huahuacaocao.com/product).
+The Home Assistant custom component use Flower Care&trade; Smart Monitor to retrieve flower information (http://www.huahuacaocao.com/product).
 HuaHuaCaoCao, in Chinese which means flowers & Plants.
+
+[![hacs_badge](https://img.shields.io/badge/HACS-Default-orange.svg)](https://github.com/custom-components/hacs)
+
+[![Total alerts](https://img.shields.io/lgtm/alerts/g/r-renato/hass-xiaomi-mi-flora-and-flower-care.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/r-renato/hass-xiaomi-mi-flora-and-flower-care/alerts/)
+[![Language grade: Python](https://img.shields.io/lgtm/grade/python/g/r-renato/hass-xiaomi-mi-flora-and-flower-care.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/r-renato/hass-xiaomi-mi-flora-and-flower-care/context:python)
+
+[![BuyMeCoffee][buymecoffeebadge]][buymecoffee]
 
 Need to register to Flower Care&trade; Smart Monitor App 
 <a href="https://play.google.com/store/apps/details?id=com.huahuacaocao.flowercare&hl=it" target="_blank">on Google Android devices</a> or 
@@ -114,3 +121,7 @@ sensor:
 Home Assistant Flora Panel 
 
 <img src="/.md.images/ha-plant-panel.png"  width="40%" height="40%" alt="Home Assistant plant panel">
+
+
+[buymecoffee]: https://www.buymeacoffee.com/0D3WbkKrn
+[buymecoffeebadge]: https://img.shields.io/badge/buy%20me%20a%20coffee-donate-yellow?style=for-the-badge
