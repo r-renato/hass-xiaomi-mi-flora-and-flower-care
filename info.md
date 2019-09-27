@@ -121,7 +121,7 @@ sensor:
 
 Home Assistant Flora Panel 
 
-<img src="/.md.images/ha-plant-panel.png"  width="40%" height="40%" alt="Home Assistant plant panel">
+<img src="https://gitlab.com/rrenato/hass-xiaomi-mi-flora-and-flower-care/raw/master/.md.images/ha-plant-panel.png"  width="40%" height="40%" alt="Home Assistant plant panel">
 
 [license-shield]:https://img.shields.io/github/license/r-renato/hass-xiaomi-mi-flora-and-flower-care
 [buymecoffee]: https://www.buymeacoffee.com/0D3WbkKrn
