@@ -94,6 +94,8 @@ API_PARAMETER_MAX_SOIL_EC = "max_soil_ec"
 API_PARAMETER_MIN_LIGHT_LUX = "min_light_lux"
 API_PARAMETER_MAX_LIGHT_LUX = "max_light_lux"
 
+ATTR_RANGES = "ranges"
+
 SCHEMA_SENSORS = vol.Schema(
     {
         vol.Optional(CONF_SENSOR_BATTERY_LEVEL): cv.entity_id,
@@ -139,6 +141,7 @@ def setup_platform(hass, config, add_devices, discovery_info=None):
         _LOGGER.debug("__init__ setup_platform 'sensor' start for %s. Flower: %s", DOMAIN, flower_info)
 
         if not (params[CONF_SENSORS] is None):
+            params[ATTR_RANGES] = flower_info[API_PARAMETER] ;
             params[CONF_MIN_TEMPERATURE] = flower_info[API_PARAMETER][API_PARAMETER_MIN_TEMP]
             params[CONF_MAX_TEMPERATURE] = flower_info[API_PARAMETER][API_PARAMETER_MAX_TEMP]
             params[CONF_MIN_MOISTURE] = flower_info[API_PARAMETER][API_PARAMETER_MIN_SOIL_MOIST]
@@ -393,6 +396,7 @@ class Plant(Entity):
             ATTR_DICT_OF_UNITS_OF_MEASUREMENT: self._unit_of_measurement,
             ATTR_INFO: self._config[ATTR_BASIC],
             ATTR_MAINTENANCE: self._config[ATTR_MAINTENANCE],
+            ATTR_RANGES: self._config[ATTR_RANGES],
             ATTR_IMAGE: self._config[ATTR_IMAGE],
         }
 
