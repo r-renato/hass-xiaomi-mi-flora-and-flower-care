@@ -141,7 +141,7 @@ def setup_platform(hass, config, add_devices, discovery_info=None):
         _LOGGER.debug("__init__ setup_platform 'sensor' start for %s. Flower: %s", DOMAIN, flower_info)
 
         if not (params[CONF_SENSORS] is None):
-            params[ATTR_RANGES] = flower_info[API_PARAMETER] ;
+            params[ATTR_RANGES] = flower_info[API_PARAMETER]
             params[CONF_MIN_TEMPERATURE] = flower_info[API_PARAMETER][API_PARAMETER_MIN_TEMP]
             params[CONF_MAX_TEMPERATURE] = flower_info[API_PARAMETER][API_PARAMETER_MAX_TEMP]
             params[CONF_MIN_MOISTURE] = flower_info[API_PARAMETER][API_PARAMETER_MIN_SOIL_MOIST]
