@@ -53,13 +53,16 @@ async def async_setup(hass, config):
     if DOMAIN not in config:
         return True
 
+    if DOMAIN not in hass.data:
+        hass.data[DOMAIN] = {}
+
     _LOGGER.debug(config[DOMAIN])
     config.setdefault(ha.DOMAIN, {})
     config.setdefault(DOMAIN, {})
 
     hass.data[DOMAIN][SERVICE_API] = ServiceAPI(config[DOMAIN][CONF_USERNAME], config[DOMAIN][CONF_PASSWORD], config[DOMAIN][CONF_REGION])
 
-    # Set up demo platforms
+    # Set up platforms
     for component in COMPONENTS_WITH_CC_PLATFORM:
         _LOGGER.info("__init__ async_setup load_platform for component: '%s' in domain '%s'.", DOMAIN, component)
         hass.async_create_task(discovery.async_load_platform(hass, component, DOMAIN, {}, config))
