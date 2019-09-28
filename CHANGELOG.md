@@ -10,5 +10,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Changed
 
+## [1.1.1] 2019-09-20
+### Fixed
+- Custom component minor bug fix
+
 ## [1.0.0] 2019-09-20
 - Initial stable version
