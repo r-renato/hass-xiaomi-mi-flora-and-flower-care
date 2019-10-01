@@ -12,6 +12,11 @@ from homeassistant.helpers import config_validation as cv
 from homeassistant.helpers import discovery
 
 import requests
+import socket
+
+import random
+import socket
+import struct
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -56,7 +61,6 @@ async def async_setup(hass, config):
     if DOMAIN not in hass.data:
         hass.data[DOMAIN] = {}
 
-    _LOGGER.debug(config[DOMAIN])
     config.setdefault(ha.DOMAIN, {})
     config.setdefault(DOMAIN, {})
 
@@ -70,6 +74,16 @@ async def async_setup(hass, config):
     _LOGGER.info("__init__ async_setup done for domain %s.", DOMAIN)
 
     return True
+
+
+def has_connection(hostname, port):
+    try:
+        host = socket.gethostbyname(hostname)
+        socket.create_connection((host, port), 2)
+        return True
+    except socket.gaierror:
+        pass
+    return False
 
 
 async def async_setup_entry(hass, entry):
@@ -96,11 +110,13 @@ class ServiceAPI(object):
     def __init__(self, username, password, region):
         """Initialize the Service API"""
 
+        ip = socket.inet_ntoa(struct.pack('>I', random.randint(1, 0xffffffff)))
+
         self._headers = {
             'Content-Type': 'application/json; charset=utf-8',
             'X-Hhcc-Region': region,
-            'Token': '',
-            'X-Real-Ip': '192.168.1.1'
+            'X-Hhcc-Token': '',
+            'X-Real-Ip': ip
         }
 
         self._authorization_payload = {
@@ -125,10 +141,10 @@ class ServiceAPI(object):
 
         self._retryLogin = True
         self._token = None
-        self.retrieve_authorization_token()
+        # self.retrieve_authorization_token()
 
     def get_authorization_token(self):
-        if not (self._token is None):
+        if self._token is None:
             self.retrieve_authorization_token()
 
         return self._token
@@ -149,18 +165,25 @@ class ServiceAPI(object):
 
         if self._retryLogin:
             try:
-                response = requests.request("POST", _ENDPOINT, json=self._authorization_payload, headers=self._headers)
-                _LOGGER.debug(response.text)
+                _LOGGER.debug("ServiceAPI retrieve_authorization_token headers: %s", self._headers)
+                _LOGGER.debug("ServiceAPI retrieve_authorization_token payload: %s", self._authorization_payload)
+
+                response = requests.request("POST", _ENDPOINT,
+                                            json=self._authorization_payload, headers=self._headers,
+                                            timeout=(10.05, 27), verify=False
+                                            )
+                _LOGGER.debug("ServiceAPI retrieve_authorization_token response data: %s", response.text)
 
                 if response.status_code == 200:
                     rdata = json.loads(response.text)
-                    _LOGGER.debug(rdata)
+
                     if rdata['status'] == 100:
                         self._token = rdata['data']['token']
+                        _LOGGER.debug("Token retrieved: %s", self._token)
 
             except socket.error as err:
                 self._retryLogin = False
-                _LOGGER.debug("Caught exception socket.error: %s", err)
+                _LOGGER.debug("Caught exception socket.error '%s' trying to retrieve access token.", err)
 
     def retrieve_flower_details(self, pid):
         import copy
@@ -190,10 +213,16 @@ class ServiceAPI(object):
         if not (self.get_authorization_token() is None):
             try:
                 headers = copy.copy(self._headers)
-                headers['Token'] = self._token
+                headers['X-Hhcc-Token'] = self.get_authorization_token()
 
-                response = requests.request("POST", _ENDPOINT, json=details_payload, headers=headers)
-                _LOGGER.debug(response.text)
+                _LOGGER.debug("ServiceAPI retrieve_flower_details headers: %s", headers)
+                _LOGGER.debug("ServiceAPI retrieve_flower_details payload: %s", details_payload)
+
+                response = requests.request("POST", _ENDPOINT,
+                                            json=details_payload, headers=headers,
+                                            timeout=(10.05, 27), verify=False
+                                            )
+                _LOGGER.debug("ServiceAPI retrieve_flower_details response data: %s", response.text)
 
                 result = None
 
@@ -207,4 +236,4 @@ class ServiceAPI(object):
 
             except socket.error as err:
                 self._retryLogin = False
-                _LOGGER.debug("Caught exception socket.error: %s", err)
+                _LOGGER.debug("Caught exception socket.error '%s' trying to retrieve flower details.", err)

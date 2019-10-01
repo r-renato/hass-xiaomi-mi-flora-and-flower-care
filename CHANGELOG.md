@@ -10,6 +10,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Changed
 
+## [1.0.2] 2019-10-01
+### Fixed
+- Custom component minor bug fix
+
 ## [1.0.1] 2019-09-28
 ### Fixed
 - Custom component minor bug fix

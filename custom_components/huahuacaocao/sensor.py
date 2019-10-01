@@ -28,6 +28,7 @@ from homeassistant.helpers.event import async_track_state_change
 """
     My import
 """
+import json
 from . import DOMAIN
 
 _LOGGER = logging.getLogger(__name__)
@@ -94,6 +95,7 @@ API_PARAMETER_MAX_SOIL_EC = "max_soil_ec"
 API_PARAMETER_MIN_LIGHT_LUX = "min_light_lux"
 API_PARAMETER_MAX_LIGHT_LUX = "max_light_lux"
 
+ATTR_FLOWER_CARE_DATA = "flower_care_data"
 ATTR_RANGES = "ranges"
 
 SCHEMA_SENSORS = vol.Schema(
@@ -131,16 +133,30 @@ ENABLE_LOAD_HISTORY = False
 
 def setup_platform(hass, config, add_devices, discovery_info=None):
     """Set up the Plant component."""
-    _LOGGER.info("__init__ setup_platform 'sensor' start for %s.", DOMAIN)
+    _LOGGER.info("__init__ setup_platform 'sensor' start for %s with config %s.", DOMAIN, config)
+
+    if config.get(CONF_PLANT_ID) is None:
+        return True
+
+    if not hasattr(hass.data[DOMAIN], ATTR_FLOWER_CARE_DATA):
+        hass.data[DOMAIN][ATTR_FLOWER_CARE_DATA] = {}
 
     params = {CONF_SENSORS: config.get(CONF_SENSORS)}
+    plant_key = config.get(CONF_PLANT_ID).replace(" ", "_")
     app_token = hass.data[DOMAIN][SERVICE_API]
 
     if not (app_token is None):
-        flower_info = app_token.retrieve_flower_details(config.get(CONF_PLANT_ID))
-        _LOGGER.debug("__init__ setup_platform 'sensor' start for %s. Flower: %s", DOMAIN, flower_info)
+        if not hasattr(hass.data[DOMAIN][ATTR_FLOWER_CARE_DATA], plant_key):
+            flower_info = app_token.retrieve_flower_details(config.get(CONF_PLANT_ID))
+            _LOGGER.debug("__init__ setup_platform 'sensor' start for %s. Retrieved Flower: %s", DOMAIN, flower_info)
 
-        if not (params[CONF_SENSORS] is None):
+            if not (flower_info is None):
+                hass.data[DOMAIN][ATTR_FLOWER_CARE_DATA][plant_key] = flower_info
+        else:
+            flower_info = hass.data[DOMAIN][ATTR_FLOWER_CARE_DATA][plant_key]
+            _LOGGER.debug("__init__ setup_platform 'sensor' start for %s. Reused Flower: %s", DOMAIN, flower_info)
+
+        if not ((params[CONF_SENSORS] is None) or (flower_info is None)):
             params[ATTR_RANGES] = flower_info[API_PARAMETER]
             params[CONF_MIN_TEMPERATURE] = flower_info[API_PARAMETER][API_PARAMETER_MIN_TEMP]
             params[CONF_MAX_TEMPERATURE] = flower_info[API_PARAMETER][API_PARAMETER_MAX_TEMP]
