@@ -123,6 +123,50 @@ Home Assistant Flora Panel
 
 <img src="https://gitlab.com/rrenato/hass-xiaomi-mi-flora-and-flower-care/raw/master/.md.images/ha-plant-panel.png"  width="40%" height="40%" alt="Home Assistant plant panel">
 
+## Lovelace Configuration
+
+Import the card using:
+
+```yaml
+resources:
+  - url: /local/hass-xiaomi-mi-flora-and-flower-care/hass-xiaomi-mi-flora-and-flower-care.js
+    type: js
+```
+### Card variables
+
+**Name**
+>(string)(Required)<br>Name to use in the header.
+
+**entity**
+>(list)(Required)<br>huahuacaocao sensor (The huahuacaocao sensor are defined as 'plant')
+
+#### Examples
+
+```yaml
+type: custom:xiaomi-mi-flora-and-flower-care-card
+name: "Zamioculcas Zamiifolia"
+entity: plant.plant_zamioculcas_zamiifolia
+```
+
+or
+
+```yaml
+type: custom:card-modder
+card:
+  type: custom:xiaomi-mi-flora-and-flower-care-card
+  name: "Zamioculcas Zamiifolia"
+  entity: plant.plant_zamioculcas_zamiifolia
+style:
+  background-repeat: no-repeat
+  background-color: rgba(50,50,50,0.3)
+  background-size: 100% 300px
+  border-radius: 20px
+  border: solid 1px rgba(100,100,100,0.3)
+  box-shadow: 3px 3px rgba(0,0,0,0.4)
+```
+
+<img src="https://gitlab.com/rrenato/hass-xiaomi-mi-flora-and-flower-care/raw/master/.md.images/ha-lovelace-plant-card.png"  width="40%" height="40%" alt="Home Assistant lovelace card">
+
 [license-shield]:https://img.shields.io/github/license/r-renato/hass-xiaomi-mi-flora-and-flower-care
 [buymecoffee]: https://www.buymeacoffee.com/0D3WbkKrn
 [buymecoffeebadge]: https://img.shields.io/badge/buy%20me%20a%20coffee-donate-yellow?style=for-the-badge
