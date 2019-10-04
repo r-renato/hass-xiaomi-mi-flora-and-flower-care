@@ -11,6 +11,7 @@ from homeassistant.const import (
 from homeassistant.helpers import config_validation as cv
 from homeassistant.helpers import discovery
 
+import json
 import requests
 
 import random
@@ -149,8 +150,6 @@ class ServiceAPI(object):
         int:Returning value
     
         """
-        import socket
-        import json
 
         if self._retryLogin:
             try:
