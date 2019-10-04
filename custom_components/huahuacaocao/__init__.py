@@ -175,8 +175,6 @@ class ServiceAPI(object):
 
     def retrieve_flower_details(self, pid):
         import copy
-        import socket
-        import json
 
         details_payload = {
             "data": {
