@@ -12,7 +12,6 @@ from homeassistant.helpers import config_validation as cv
 from homeassistant.helpers import discovery
 
 import requests
-import socket
 
 import random
 import socket
@@ -74,16 +73,6 @@ async def async_setup(hass, config):
     _LOGGER.info("__init__ async_setup done for domain %s.", DOMAIN)
 
     return True
-
-
-def has_connection(hostname, port):
-    try:
-        host = socket.gethostbyname(hostname)
-        socket.create_connection((host, port), 2)
-        return True
-    except socket.gaierror:
-        pass
-    return False
 
 
 async def async_setup_entry(hass, entry):
