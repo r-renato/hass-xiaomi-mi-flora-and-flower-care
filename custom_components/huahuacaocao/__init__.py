@@ -42,7 +42,8 @@ CONFIG_SCHEMA = vol.Schema(
     extra=vol.ALLOW_EXTRA,
 )
 
-_ENDPOINT = 'https://eu-api.huahuacaocao.net/api/v2'
+_HOSTNAME = 'eu-api.huahuacaocao.net'
+_ENDPOINT = 'https://' + _HOSTNAME + '/api/v2'
 
 DEFAULT_TIMEOUT = 10
 
@@ -133,6 +134,14 @@ class ServiceAPI(object):
         self._token = None
         # self.retrieve_authorization_token()
 
+    @staticmethod
+    def resolves_hostname(hostname):
+        try:
+            socket.gethostbyname(hostname)
+            return True
+        except socket.error:
+            return False
+
     def get_authorization_token(self):
         if self._token is None:
             self.retrieve_authorization_token()
@@ -155,6 +164,9 @@ class ServiceAPI(object):
             try:
                 _LOGGER.debug("ServiceAPI retrieve_authorization_token headers: %s", self._headers)
                 _LOGGER.debug("ServiceAPI retrieve_authorization_token payload: %s", self._authorization_payload)
+
+                if not ServiceAPI.resolves_hostname( _HOSTNAME ):
+                    _LOGGER.error("Hostname (%s) could not be resolved.", _HOSTNAME )
 
                 response = requests.request("POST", _ENDPOINT,
                                             json=self._authorization_payload, headers=self._headers,

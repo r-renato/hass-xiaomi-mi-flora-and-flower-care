@@ -28,7 +28,6 @@ from homeassistant.helpers.event import async_track_state_change
 """
     My import
 """
-import json
 from . import DOMAIN
 
 _LOGGER = logging.getLogger(__name__)
@@ -117,14 +116,13 @@ ENTITY_ID_ALL_PLANTS = group.ENTITY_ID_FORMAT.format("all_plants")
 """
 PLANT_SCHEMA = vol.Schema(
     {
-        vol.Required(CONF_PLANT_ID): cv.string,
+        vol.Optional(CONF_PLANT_ID): cv.string,
         vol.Required(CONF_NAME): cv.string,
-        vol.Required(CONF_SENSORS): vol.Schema(SCHEMA_SENSORS),
+        vol.Optional(CONF_SENSORS): vol.Schema(SCHEMA_SENSORS),
     }
 )
 
 PLATFORM_SCHEMA = vol.Schema({DOMAIN: {cv.string: PLANT_SCHEMA}}, extra=vol.ALLOW_EXTRA)
-
 
 # Flag for enabling/disabling the loading of the history from the database.
 # This feature is turned off right now as its tests are not 100% stable.
@@ -141,13 +139,20 @@ def setup_platform(hass, config, add_devices, discovery_info=None):
     if not hasattr(hass.data[DOMAIN], ATTR_FLOWER_CARE_DATA):
         hass.data[DOMAIN][ATTR_FLOWER_CARE_DATA] = {}
 
-    params = {CONF_SENSORS: config.get(CONF_SENSORS)}
-    plant_key = config.get(CONF_PLANT_ID).replace(" ", "_")
-    app_token = hass.data[DOMAIN][SERVICE_API]
+    params = {}
+    sensors = config.get(CONF_SENSORS)
 
-    if not (app_token is None):
+    if not (sensors is None):
+        params[CONF_SENSORS] = sensors
+    else:
+        params[CONF_SENSORS] = dict()
+
+    plant_key = config.get(CONF_PLANT_ID).replace(" ", "_")
+    app_api = hass.data[DOMAIN][SERVICE_API]
+
+    if not (app_api is None):
         if not hasattr(hass.data[DOMAIN][ATTR_FLOWER_CARE_DATA], plant_key):
-            flower_info = app_token.retrieve_flower_details(config.get(CONF_PLANT_ID))
+            flower_info = app_api.retrieve_flower_details(config.get(CONF_PLANT_ID))
             _LOGGER.debug("__init__ setup_platform 'sensor' start for %s. Retrieved Flower: %s", DOMAIN, flower_info)
 
             if not (flower_info is None):
@@ -156,7 +161,7 @@ def setup_platform(hass, config, add_devices, discovery_info=None):
             flower_info = hass.data[DOMAIN][ATTR_FLOWER_CARE_DATA][plant_key]
             _LOGGER.debug("__init__ setup_platform 'sensor' start for %s. Reused Flower: %s", DOMAIN, flower_info)
 
-        if not ((params[CONF_SENSORS] is None) or (flower_info is None)):
+        if not (flower_info is None):
             params[ATTR_RANGES] = flower_info[API_PARAMETER]
             params[CONF_MIN_TEMPERATURE] = flower_info[API_PARAMETER][API_PARAMETER_MIN_TEMP]
             params[CONF_MAX_TEMPERATURE] = flower_info[API_PARAMETER][API_PARAMETER_MAX_TEMP]
@@ -171,16 +176,17 @@ def setup_platform(hass, config, add_devices, discovery_info=None):
             params[ATTR_MAINTENANCE] = flower_info[ATTR_MAINTENANCE]
             params[ATTR_IMAGE] = flower_info[ATTR_IMAGE]
 
-    if not (params[CONF_SENSORS] is None):
-        component = EntityComponent(_LOGGER, DOMAIN_PLANT, hass, group_name=GROUP_NAME_ALL_PLANTS)
+    # if not (sensors is None):
+    component = EntityComponent(_LOGGER, DOMAIN_PLANT, hass)
 
-        entities = []
+    entities = []
 
-        name = config.get(CONF_NAME)
-        entity = Plant(name, params)
-        entities.append(entity)
+    name = config.get(CONF_NAME)
+    entity = Plant(name, params)
+    entities.append(entity)
 
-        component.add_entities(entities)
+    component.add_entities(entities)
+    _LOGGER.debug("__init__ setup_platform 'sensor' %s in platform %s. Component added with %s.", name, DOMAIN, params)
 
     _LOGGER.info("__init__ setup_platform 'sensor' done for %s.", DOMAIN)
     return True

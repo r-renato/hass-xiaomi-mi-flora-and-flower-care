@@ -4,7 +4,7 @@ HuaHuaCaoCao, in Chinese which means flowers & Plants.
 [![hacs_badge](https://img.shields.io/badge/HACS-Default-orange.svg)](https://github.com/custom-components/hacs)
 
 [![License][license-shield]](LICENSE.md)
-[![Total alerts](https://img.shields.io/lgtm/alerts/g/r-renato/hass-xiaomi-mi-flora-and-flower-care.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/r-renato/hass-xiaomi-mi-flora-and-flower-care/alerts/)
+[![Total alerts](https://img.shields.io/lgtm/alerts/g/r-renato/ha-card-waze-travel-time.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/r-renato/hass-xiaomi-mi-flora-and-flower-care/alerts/)
 [![Language grade: Python](https://img.shields.io/lgtm/grade/python/g/r-renato/hass-xiaomi-mi-flora-and-flower-care.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/r-renato/hass-xiaomi-mi-flora-and-flower-care/context:python)
 
 [![BuyMeCoffee][buymecoffeebadge]][buymecoffee]
@@ -55,7 +55,7 @@ huahuacaocao:
 >(string)(Required)<br>Name to use in the frontend.
 
 **sensors**
->(list)(Required)<br>List of sensor measure entities.
+>(list)(Optional)<br>List of sensor measure entities.
 
 >**moisture**
 >>(string)(Optional)<br>Moisture of the plant. Measured in %. Can have a min and max value set optionally.
