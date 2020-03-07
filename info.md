@@ -151,18 +151,20 @@ entity: plant.plant_zamioculcas_zamiifolia
 or
 
 ```yaml
-type: custom:card-modder
+type: custom:mod-card
 card:
   type: custom:xiaomi-mi-flora-and-flower-care-card
   name: "Zamioculcas Zamiifolia"
   entity: plant.plant_zamioculcas_zamiifolia
-style:
-  background-repeat: no-repeat
-  background-color: rgba(50,50,50,0.3)
-  background-size: 100% 300px
-  border-radius: 20px
-  border: solid 1px rgba(100,100,100,0.3)
-  box-shadow: 3px 3px rgba(0,0,0,0.4)
+style:|
+   ha-card {
+      --primary-text-color: #FFFFFF;
+      --secondary-text-color: #FFFFFF;
+      --paper-item-icon-color: #FFFFFF;
+      --table-tr-td-border-bottom: #FFFFFF;
+      --banner-background: rgba(50,50,50,0.75);
+      --content-background: rgba(50,50,50,0.75);
+   }
 ```
 
 <img src="https://gitlab.com/rrenato/hass-xiaomi-mi-flora-and-flower-care/raw/master/.md.images/ha-lovelace-plant-card.png"  width="40%" height="40%" alt="Home Assistant lovelace card">

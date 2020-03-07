@@ -120,9 +120,6 @@ class FlowerCareCard extends LitElement {
         //console.log({ configconfig: this.hass.states[ this._config!.entity ]});
         //console.log({ config2: this.hass.states[ 'sensor.zamioculcas_zamiifolia_battery' ]});
 
-
-
-
         //console.log({ floracaresensor: floraCare.attributes.sensors });
 
         return html`
@@ -206,7 +203,7 @@ class FlowerCareCard extends LitElement {
         return html`
             <table class="s-table-lite">
                 <thead>
-                    <tr><td colspan="2" style="border-bottom: azure solid 1px;text-align: center;font-weight: 500;">Maintenance</td></tr>
+                    <tr><td colspan="2" class="table-tr-td-border-bottom" style="text-align: center;font-weight: 500;">Maintenance</td></tr>
                 </thead>
                 <tbody> 
                     ${Object.keys(maintenance).map( key => html`
@@ -276,7 +273,7 @@ class FlowerCareCard extends LitElement {
                         </td>
                     </tr>
                     <tr>
-                        <td valign="top" colspan="5" class="header" style="border-top: azure solid 1px;text-align: right;padding-right: 8px;padding-top: 6;line-height: 1em;font-weight: normal;font-size: 105%;">${this._config.zone_name}</td>
+                        <td valign="top" colspan="5" class="header table-tr-td-border-bottom" style="text-align: right;padding-right: 8px;padding-top: 6;line-height: 1em;font-weight: normal;font-size: 105%;">${this._config.zone_name}</td>
                     </tr>
                 </tbody>
             </table>           

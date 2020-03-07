@@ -24,7 +24,7 @@ const style = css`
         background-position: center;
         padding-top: 12px;
         
-        background-color: rgba(50,50,50,0.75);
+        background-color: var(--banner-background);
         border-radius: 3px;
     }
     
@@ -54,7 +54,7 @@ const style = css`
         display: flex;
         justify-content: space-between;
         padding: 16px 32px 24px 32px;
-        background-color: rgba(50,50,50,0.75);
+        background-color: var(--content-background);
         border-radius: 3px;
     }
     
@@ -82,7 +82,12 @@ const style = css`
     
     .uom {
         color: var(--secondary-text-color);
-    } 
+    }
+    
+    .table-tr-td-border-bottom {
+        border-bottom-color: var(--table-tr-td-border-bottom);
+        border-bottom: solid 1px;
+    }
    
 /* CUSTOM */
    

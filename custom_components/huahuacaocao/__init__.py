@@ -74,6 +74,7 @@ async def async_setup(hass, config):
         _LOGGER.info("__init__ async_setup load_platform for component: '%s' in domain '%s'.", DOMAIN, component)
         hass.async_create_task(discovery.async_load_platform(hass, component, DOMAIN, {}, config))
 
+    # Set up Lovelace Card
     fn_card = 'hacs-card-for-xiaomi-mi-flora-and-flower-care.js'
     path_module = os.path.dirname(os.path.abspath(__file__))
 
