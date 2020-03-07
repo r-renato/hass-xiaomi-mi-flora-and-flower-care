@@ -4,6 +4,7 @@ import { ActionConfig } from "custom-card-helpers";
 export interface CardConfig {
     type: string;
     name?: string;
+    zone_name?: string;
     entity: string;
 }
 export interface FloraCarePlantRanges {

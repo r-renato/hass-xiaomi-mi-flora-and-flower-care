@@ -1,4 +1,6 @@
 """Support for Xiaomi Flora devices using huahuacaocao.com"""
+import os
+from shutil import copyfile
 from datetime import timedelta
 import logging
 
@@ -71,6 +73,17 @@ async def async_setup(hass, config):
     for component in COMPONENTS_WITH_CC_PLATFORM:
         _LOGGER.info("__init__ async_setup load_platform for component: '%s' in domain '%s'.", DOMAIN, component)
         hass.async_create_task(discovery.async_load_platform(hass, component, DOMAIN, {}, config))
+
+    fn_card = 'hacs-card-for-xiaomi-mi-flora-and-flower-care.ts'
+    path_module = os.path.dirname(os.path.abspath(__file__))
+
+    path_source = os.path.join(path_module, '.plugin')
+    path_target = os.path.join(path_module, '../../www/community/hacs-card-for-xiaomi-mi-flora-and-flower-care')
+
+    if not os.path.exists(path_target):
+        os.mkdir(path_target)
+
+    copyfile(path_source + '/' + fn_card, path_target + '/' + fn_card)
 
     _LOGGER.info("__init__ async_setup done for domain %s.", DOMAIN)
 

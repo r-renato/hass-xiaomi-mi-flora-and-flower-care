@@ -12,6 +12,8 @@ let tooltipVisible = css`visible` ;
 const style = css`
     ha-card {
         padding: 24px 16px 16px 16px;
+        background-repeat: no-repeat;
+        background-size: 100% 100% !important;
     }
     
     .banner {
