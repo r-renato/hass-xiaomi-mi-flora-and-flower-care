@@ -129,7 +129,7 @@ Import the card using:
 
 ```yaml
 resources:
-  - url: /local/hass-xiaomi-mi-flora-and-flower-care/hass-xiaomi-mi-flora-and-flower-care.js
+  - url: /community_plugin/hacs-card-for-xiaomi-mi-flora-and-flower-care/hacs-card-for-xiaomi-mi-flora-and-flower-care.ts
     type: js
 ```
 ### Card variables
