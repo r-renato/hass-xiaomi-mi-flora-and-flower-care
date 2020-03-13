@@ -3,12 +3,18 @@
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## [1.1.0] Unreleased
+## [1.2.0] Unreleased
 ### Fixed
 
 ### Added
 
 ### Changed
+
+## [1.1.0] Unreleased
+### Fixed
+- minor bug fix
+### Added
+- Add customizable display sessions
 
 ## [1.0.2] 2019-10-01
 ### Fixed

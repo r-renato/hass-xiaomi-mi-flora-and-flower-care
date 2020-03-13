@@ -5,6 +5,7 @@ export interface CardConfig {
     type: string;
     name?: string;
     zone_name?: string;
+    display?: string[] ;
     entity: string;
 }
 export interface FloraCarePlantRanges {

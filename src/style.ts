@@ -89,6 +89,16 @@ const style = css`
         border-bottom: solid 1px;
     }
    
+    .div-border-top {
+        border-top-color: var(--table-tr-td-border-bottom);
+        border-top: solid 1px;
+    }
+    
+    .div-border-bottom >table {
+        border-bottom-color: var(--table-tr-td-border-bottom);
+        border-bottom: solid 1px;
+    }
+
 /* CUSTOM */
    
     table {

@@ -20,23 +20,56 @@ import {CardConfig, FloraCarePlant, FloraCarePlantRanges, Sensor} from "./types"
 
 import style from './style';
 
+console.info("%c XIAOMI-MI-FLORA-AND-FLOWER-CARE-CARD %c 1.0.1 ", "color: white; background: green; font-weight: 700;", "color: coral; background: white; font-weight: 700;");
 
-// TODO Name your custom element
 @customElement("xiaomi-mi-flora-and-flower-care-card")
 class FlowerCareCard extends LitElement {
+    private invalidConfig: boolean = false ;
+    private invalidEntity: boolean = false ;
+
+    private displayInfo: boolean = false ;
+    private displayMaintenance: boolean = false ;
+
     readonly MOINSTURE = 'moisture' ;
     readonly CONDUCTIVITY = 'conductivity' ;
     readonly BRIGHTNESS = 'brightness' ;
     readonly TEMPERATURE = 'temperature' ;
     readonly BATTERY = 'battery' ;
 
-    // TODO Add any properities that should cause your element to re-render here
     @property() public hass?: HomeAssistant ;
 
     @property() private _config?: CardConfig ;
 
     @property() private _floraCare?: FloraCarePlant ;
     @property() private _floraRanges?: FloraCarePlantRanges ;
+
+    /**
+     *
+     * @param {CardConfig} config
+     */
+    public setConfig(config: CardConfig): void {
+        console.log({ flora_care_card_config: config });
+
+        if (!config) {
+            this.invalidConfig = true ;
+            throw new Error("Invalid configuration") ;
+        }
+
+        if (!config.entity || config.entity.length == 0) {
+            this.invalidEntity = true ;
+            throw new Error('Entity is required') ;
+        }
+
+        if (config.display && config.display.length > 0) {
+            let displays = config.display.map(function(value) {
+                return value.toLocaleLowerCase() ;
+            }) ;
+
+            this.displayMaintenance = displays.includes('maintenance') ;
+            this.displayInfo = displays.includes('info') ;
+        }
+        this._config = config;
+    }
 
     /**
      * get the current size of the card
@@ -55,38 +88,21 @@ class FlowerCareCard extends LitElement {
     }
 
     /**
-     *
-     * @param {CardConfig} config
-     */
-    public setConfig(config: CardConfig): void {
-        console.log({ flora_care_card_config: config });
-
-        // TODO Check for required fields and that they are of the proper format
-        if (!config) throw new Error("Invalid configuration");
-
-        // if (!config.entity) throw new Error('entity is required');
-
-        this._config = config;
-    }
-
-
-    /**
      * generates the card HTML
      * @return {TemplateResult}
      */
     render() {
-        // if ( undefined == this.hass.states[ this._config!.entity ]) return html`
-        //     <ha-card>
-        //         <div class='banner'>
-        //             <div class="header">xiaomi-mi-flora-and-flower-care-card</div>
-        //         </div>
-        //         <div class='content'>
-        //             Entity '${this._config!.entity}' not found.
-        //         </div>
-        //     </ha-card>
-        // `;
-        // else
-        return this._render() ;
+        if ( this.invalidConfig || this.invalidEntity ) return html`
+            <ha-card class="ha-card-waze-travel-time">
+                <div class='banner'>
+                    <div class="header">xiaomi-mi-flora-and-flower-care-card</div>
+                </div>
+                <div class='content'>
+                    Configuration ERROR!
+                </div>
+            </ha-card>
+        `;
+        else return this._render() ;
     }
 
     /**
@@ -95,19 +111,29 @@ class FlowerCareCard extends LitElement {
      * @private
      */
     _render() {
-        if ( undefined == this.hass.states[ this._config!.entity ]) throw new Error('entity is required');
-
         this._floraCare = <undefined> this.hass.states[ this._config!.entity ] ;
         this._floraRanges = this._floraCare.attributes.ranges ;
+
+        let content = this.computeContent() ;
+        let displayContent = "" !== content.strings.raw.toString() ;
+        let infoClass = this.displayInfo && (this.displayMaintenance || displayContent) ? 'banner div-border-bottom' : 'banner';
+        let maintenanceClass = this.displayMaintenance && displayContent ? 'banner div-border-bottom' : 'banner';
 
         return html`
       <ha-card style="background-image:url(${this._floraCare.attributes.image});background-repeat: no-repeat;background-size: auto !important;">
         <div class='banner'>${this.computeHeader()}
         </div>
-        <div class='banner' style="padding-left: 16px;padding-right: 16px;">${this.computeMaintenanceToolTips(this._floraCare.attributes.maintenance)}</div>
+        ${this.displayInfo ? html`
+        <div class='${infoClass}' style="padding-left: 16px;padding-right: 16px;">${this.computeInfoToolTips(this._floraCare.attributes.info)}</div>
+        ` : html`` }
+        ${this.displayMaintenance ? html`
+        <div class='${maintenanceClass}' style="padding-left: 16px;padding-right: 16px;">${this.computeMaintenanceToolTips(this._floraCare.attributes.maintenance)}</div>
+        ` : html`` }
+        ${displayContent ? html`
         <div class='content'>
-            ${this.computeContent()}
+            ${content}
         </div>
+        ` : html`` }
       </ha-card>
         `;
     }
@@ -122,49 +148,37 @@ class FlowerCareCard extends LitElement {
 
         //console.log({ floracaresensor: floraCare.attributes.sensors });
 
-        return html`
-            ${this.computeContentItem(
-            this.getSensor( this._floraCare.attributes.sensors[ this.MOINSTURE ]),
-            this._floraRanges.min_soil_moist, this._floraRanges.max_soil_moist,
-            this.computeAttributeClass( this._floraCare.attributes.problem, this.MOINSTURE )
-        )}
-            ${this.computeContentItem(
-            this.getSensor( this._floraCare.attributes.sensors[ this.CONDUCTIVITY ]),
-            this._floraRanges.min_soil_ec, this._floraRanges.max_soil_ec,
-            this.computeAttributeClass( this._floraCare.attributes.problem, this.CONDUCTIVITY )
-        )}
-            ${this.computeContentItem(
-            this.getSensor( this._floraCare.attributes.sensors[ this.BRIGHTNESS ]),
-            this._floraRanges.min_light_lux, this._floraRanges.max_light_lux,
-            this.computeAttributeClass( this._floraCare.attributes.problem, this.BRIGHTNESS )
-        )}
-            ${this.computeContentItem(
-            this.getSensor( this._floraCare.attributes.sensors[ this.TEMPERATURE ]),
-            this._floraRanges.min_temp, this._floraRanges.max_temp,
-            this.computeAttributeClass( this._floraCare.attributes.problem, this.TEMPERATURE )
-        )}
-        `;
-    }
+        let moinsture = this.getSensor( this._floraCare.attributes.sensors[ this.MOINSTURE ]) ;
+        let conductivity = this.getSensor( this._floraCare.attributes.sensors[ this.CONDUCTIVITY ]) ;
+        let brightness = this.getSensor( this._floraCare.attributes.sensors[ this.BRIGHTNESS ]) ;
+        let temperature = this.getSensor( this._floraCare.attributes.sensors[ this.TEMPERATURE ]) ;
 
-    // /**
-    //  *
-    //  * @param model
-    //  * @returns {TemplateResult}
-    //  */
-    // computeBanner( model ) {
-    //     if( 'full' === model.toLowerCase ) return this.computeFullBanner() ;
-    //     else return this.computeFullBanner() ;
-    // }
-    //
-    // /**
-    //  *
-    //  * @returns {TemplateResult}
-    //  */
-    // computeFullBanner() {
-    //     return html`
-    //         <div class="header">${this.computeTitle()}</div>
-    //     `;
-    // }
+        if( !moinsture && !conductivity && !brightness && !temperature )
+            return html`` ;
+        else
+            return html`
+                ${moinsture ? this.computeContentItem(
+                moinsture,
+                this._floraRanges.min_soil_moist, this._floraRanges.max_soil_moist,
+                this.computeAttributeClass( this._floraCare.attributes.problem, this.MOINSTURE )
+                ) : html``}
+                ${conductivity ? this.computeContentItem(
+                conductivity,
+                this._floraRanges.min_soil_ec, this._floraRanges.max_soil_ec,
+                this.computeAttributeClass( this._floraCare.attributes.problem, this.CONDUCTIVITY )
+                ): html``}
+                ${brightness ? this.computeContentItem(
+                brightness,
+                this._floraRanges.min_light_lux, this._floraRanges.max_light_lux,
+                this.computeAttributeClass( this._floraCare.attributes.problem, this.BRIGHTNESS )
+                ): html``}
+                ${temperature ? this.computeContentItem(
+                temperature,
+                this._floraRanges.min_temp, this._floraRanges.max_temp,
+                this.computeAttributeClass( this._floraCare.attributes.problem, this.TEMPERATURE )
+                ): html``}
+            `;
+    }
 
     computeTitle() {
         return (this._config && this._config.name) ;
@@ -219,18 +233,17 @@ class FlowerCareCard extends LitElement {
 
     computeInfoToolTips( info ) {
         return html`
-            <table is="s-table-lite">
+            <table is="s-table-lite tabGeral">
                 <tbody>
                     ${Object.keys(info).filter( key => {
-            if( 'floral_language' == key ) {
-                return false; // skip
-            }
-            return true;
-        }).map( key => html`
-                        
+                        if( 'floral_language' == key ) {
+                            return false; // skip
+                        }
+                        return true;
+                    }).map( key => html`
                         <tr>
-                            <td valign="top" style="width:1%;text-align: left;">${this.capitalize(key)}</td>
-                            <td valign="top" style="text-align: left;">${info[key]}</td>
+                            <td valign="top" style="width:1%;text-align: left;line-height: 1em;font-weight: 500;font-size: 85%;">${this.capitalize(key)}</td>
+                            <td valign="top" style="text-align: left;line-height: 1em;font-weight: normal;font-size: 85%;">${info[key]}</td>
                         </tr>    
                     `)}                    
                 </tbody>

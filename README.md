@@ -138,12 +138,13 @@ resources:
     type: js
 ```
 ### Card variables
-
-**Name**
->(string)(Required)<br>Name to use in the header.
-
-**entity**
->(list)(Required)<br>huahuacaocao sensor (The huahuacaocao sensor are defined as 'plant')
+| **Name**     | **Type**      | **Requirement** | **Default**                       | **Description**                                                                               |
+|--------------|---------------|-----------------|-----------------------------------|-----------------------------------------------------------------------------------------------|
+| type         | string        | **Required**    |                                   | Card type must be `custom:xiaomi-mi-flora-and-flower-care-card`                               |
+| name         | string        | Optional        |                                   | Card name shown on top                                                                        |
+| zone_name    | string        | Optional        |                                   | Zone name, where the flower is located                                                        |
+| display      | string list   | Optional        |                                   | Ordered list of sessions. Valid values: `info, maintenance`                                   |
+| entity       | string        | Optional        |                                   | huahuacaocao plant sensor name                                                                |
 
 #### Examples
 
@@ -151,6 +152,17 @@ resources:
 type: custom:xiaomi-mi-flora-and-flower-care-card
 name: "Zamioculcas Zamiifolia"
 entity: plant.plant_zamioculcas_zamiifolia
+```
+
+or
+
+```yaml
+type: custom:xiaomi-mi-flora-and-flower-care-card
+name: "Zamioculcas Zamiifolia"
+zone_name: "Kitchen"
+display:
+    - info
+    - maintenance
 ```
 
 or
