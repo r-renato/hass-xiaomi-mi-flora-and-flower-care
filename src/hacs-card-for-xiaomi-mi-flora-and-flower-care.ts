@@ -20,7 +20,7 @@ import {CardConfig, FloraCarePlant, FloraCarePlantRanges, Sensor} from "./types"
 
 import style from './style';
 
-console.info("%c XIAOMI-MI-FLORA-AND-FLOWER-CARE-CARD %c 1.0.1 ", "color: white; background: green; font-weight: 700;", "color: coral; background: white; font-weight: 700;");
+console.info("%c XIAOMI-MI-FLORA-AND-FLOWER-CARE-CARD %c 1.1.0 ", "color: white; background: green; font-weight: 700;", "color: coral; background: white; font-weight: 700;");
 
 @customElement("xiaomi-mi-flora-and-flower-care-card")
 class FlowerCareCard extends LitElement {
