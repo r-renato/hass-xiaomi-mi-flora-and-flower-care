@@ -81,8 +81,7 @@ async def async_setup(hass, config):
     path_source = os.path.join(path_module, '.plugin')
     path_target = os.path.join(path_module, '../../www/community/hacs-card-for-xiaomi-mi-flora-and-flower-care')
 
-    if not os.path.exists(path_target):
-        os.mkdir(path_target)
+    os.makedirs(path_target, exist_ok=True)
 
     copyfile(path_source + '/' + fn_card, path_target + '/' + fn_card)
 
