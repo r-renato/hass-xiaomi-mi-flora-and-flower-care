@@ -160,22 +160,26 @@ class FlowerCareCard extends LitElement {
                 ${moinsture ? this.computeContentItem(
                 moinsture,
                 this._floraRanges.min_soil_moist, this._floraRanges.max_soil_moist,
-                this.computeAttributeClass( this._floraCare.attributes.problem, moinsture, this.MOINSTURE )
+                this.computeAttributeClass( this._floraCare.attributes.problem, moinsture, this.MOINSTURE ),
+                'mdi:water-percent'
                 ) : html``}
                 ${conductivity ? this.computeContentItem(
                 conductivity,
                 this._floraRanges.min_soil_ec, this._floraRanges.max_soil_ec,
-                this.computeAttributeClass( this._floraCare.attributes.problem, conductivity, this.CONDUCTIVITY )
+                this.computeAttributeClass( this._floraCare.attributes.problem, conductivity, this.CONDUCTIVITY ),
+                'mdi:flash-circle'
                 ): html``}
                 ${brightness ? this.computeContentItem(
                 brightness,
                 this._floraRanges.min_light_lux, this._floraRanges.max_light_lux,
-                this.computeAttributeClass( this._floraCare.attributes.problem, brightness, this.BRIGHTNESS )
+                this.computeAttributeClass( this._floraCare.attributes.problem, brightness, this.BRIGHTNESS ),
+                'mdi:white-balance-sunny'
                 ): html``}
                 ${temperature ? this.computeContentItem(
                 temperature,
                 this._floraRanges.min_temp, this._floraRanges.max_temp,
-                this.computeAttributeClass( this._floraCare.attributes.problem, temperature, this.TEMPERATURE )
+                this.computeAttributeClass( this._floraCare.attributes.problem, temperature, this.TEMPERATURE ),
+                'mdi:thermometer'
                 ): html``}
             `;
     }
@@ -192,12 +196,15 @@ class FlowerCareCard extends LitElement {
      * @param {string} problemClass
      * @returns {TemplateResult}
      */
-    computeContentItem( sensor : Sensor, min : number, max : number, problemClass : string ) {
+    computeContentItem( sensor, min : number, max : number, problemClass: string, defaultIcon: string ) {
         if( undefined !== sensor ) {
+            let icon = sensor.attributes && sensor.attributes.icon
+                ? sensor.attributes.icon : defaultIcon ;
+
             return html`
-             <div class="attributes" on-click="attributeClicked">
+             <div class="attributes" @click=${e => this.handlePopup(e, sensor.entity_id)}>
                 <div>
-                    <ha-icon icon="${sensor.attributes.icon}"></ha-icon>
+                    <ha-icon icon="${icon}"></ha-icon>
                 </div>
                 <div class="${problemClass}">
                     ${sensor.state.indexOf("unknown") === -1 
@@ -281,7 +288,8 @@ class FlowerCareCard extends LitElement {
                         </td>                        
                         <td>
                         ${this.computeContentItem(batterySensor, null, null, 
-                            this.computeAttributeClass( this._floraCare.attributes.problem, batterySensor, this.BATTERY )
+                            this.computeAttributeClass( this._floraCare.attributes.problem, batterySensor, this.BATTERY ),
+                    'mdi:battery-charging'
                         )}  
                         </td>
                     </tr>
@@ -325,6 +333,20 @@ class FlowerCareCard extends LitElement {
 
     capitalize(string) {
         return string.charAt(0).toUpperCase() + string.slice(1);
+    }
+
+    /**
+     *
+     * @param e
+     * @param entityId
+     */
+    handlePopup(e, entityId: string) {
+        e.stopPropagation();
+
+        let ne = new Event('hass-more-info', {composed: true});
+        // @ts-ignore
+        ne.detail = {entityId};
+        this.dispatchEvent(ne);
     }
 }
 

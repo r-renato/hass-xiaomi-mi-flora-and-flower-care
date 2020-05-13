@@ -11,13 +11,18 @@ HuaHuaCaoCao  means flowers & Plants in Chinese.
 
 [![BuyMeCoffee][buymecoffeebadge]][buymecoffee]
 
-Need to register to Flower Care&trade; Smart Monitor App 
-<a href="https://play.google.com/store/apps/details?id=com.huahuacaocao.flowercare&hl=it" target="_blank">on Google Android devices</a> or 
-<a href="https://apps.apple.com/it/app/flower-care/id1095274672" target="_blank">on Apple iOS devices</a> to use the component.
+## Please read carefully
 
-_Home Assistant Plant monitor extended component, integrated with Flora care application plant informations._
+1. Need to register to Flower Care&trade; Smart Monitor App 
+   <a href="https://play.google.com/store/apps/details?id=com.huahuacaocao.flowercare&hl=it" target="_blank">on Google Android devices</a> or 
+   <a href="https://apps.apple.com/it/app/flower-care/id1095274672" target="_blank">on Apple iOS devices</a> to use this component.
+2. _This custom component extends the Home Assistant Plant monitor with plant information coming from the Flora Care application._
+3. _The lovelace card is self installed by the component and can be used also without the xiaomi Flora sensor._
 
-<img src="https://gitlab.com/rrenato/hass-xiaomi-mi-flora-and-flower-care/raw/master/.md.images/ha-lovelace-plant-card.png"  width="40%" height="40%" alt="Home Assistant lovelace card">
+<p  style="float: left; display: table-cell;vertical-align: top;">
+<img src="https://gitlab.com/rrenato/hass-xiaomi-mi-flora-and-flower-care/raw/master/.md.images/ha-lovelace-plant-card-sensors-maintenance.png" width="40%" height="auto" alt="Home Assistant lovelace card">
+<img src="https://gitlab.com/rrenato/hass-xiaomi-mi-flora-and-flower-care/raw/master/.md.images/ha-lovelace-plant-card-info-maintenance.png" width="40%" height="auto" alt="Home Assistant lovelace card">
+</p>
 
 ## Manual installation
 
@@ -56,28 +61,27 @@ huahuacaocao:
 
 **plant_id**
 >(string)(Required)<br>Plant alias. You can find it in the Plant Archive panel of the Flower Care&trade; Smart Monitor App
-
+>
 **Name**
 >(string)(Required)<br>Name to use in the frontend.
-
+>
 **sensors**
 >(list)(Required)<br>List of sensor measure entities.
-
+>
 >**moisture**
 >>(string)(Optional)<br>Moisture of the plant. Measured in %. Can have a min and max value set optionally.
-
+>
 >**battery**
 >>(string)(Optional)<br>Battery level of the plant sensor. Measured in %. Can only have a min level set optionally.
-
+>
 >**temperature**
 >>(string)(Optional)<br>Temperature of the plant. Measured in degrees Celsius. Can have a min and max value set optionally.
-
+>
 >**conductivity**
 >>(string)(Optional)<br>Conductivity of the plant. Measured in µS/cm. Can have a min and max value set optionally.
-
+>
 >**brightness**
 >>(string)(Optional)<br>Light exposure of the plant. Measured in Lux. Can have a min and max value set optionally.
-
 
 #### Examples
 
@@ -147,15 +151,20 @@ resources:
 | display      | string list   | Optional        |                                   | Ordered list of sessions. Valid values: `info, maintenance`                                   |
 | entity       | string        | Optional        |                                   | huahuacaocao plant sensor name                                                                |
 
-#### Examples
+### Examples
 
+#### - Lovelace card config with `maintenance` session (without sensors)
 ```yaml
 type: custom:xiaomi-mi-flora-and-flower-care-card
 name: "Zamioculcas Zamiifolia"
 entity: plant.plant_zamioculcas_zamiifolia
+display:
+    - maintenance
 ```
 
-or
+<img src="https://gitlab.com/rrenato/hass-xiaomi-mi-flora-and-flower-care/raw/master/.md.images/ha-lovelace-plant-card-maintenance.png" width="40%" height="auto" alt="Home Assistant lovelace card">
+
+#### - Lovelace card config with `info` and `maintenance` session (without sensors)
 
 ```yaml
 type: custom:xiaomi-mi-flora-and-flower-care-card
@@ -166,7 +175,21 @@ display:
     - maintenance
 ```
 
-or
+<img src="https://gitlab.com/rrenato/hass-xiaomi-mi-flora-and-flower-care/raw/master/.md.images/ha-lovelace-plant-card-info-maintenance.png" width="40%" height="auto" alt="Home Assistant lovelace card">
+
+#### - Lovelace card config with `info` and `maintenance` session (with sensors)
+
+```yaml
+type: custom:xiaomi-mi-flora-and-flower-care-card
+name: "Zamioculcas Zamiifolia"
+entity: plant.plant_zamioculcas_zamiifolia
+display:
+    - maintenance
+```
+
+<img src="https://gitlab.com/rrenato/hass-xiaomi-mi-flora-and-flower-care/raw/master/.md.images/ha-lovelace-plant-card-sensors-maintenance.png" width="40%" height="auto" alt="Home Assistant lovelace card">
+
+##### or with mod-card
 
 ```yaml
 type: custom:mod-card
@@ -184,6 +207,10 @@ style:|
       --content-background: rgba(50,50,50,0.75);
    }
 ```
+
+<img src="https://gitlab.com/rrenato/hass-xiaomi-mi-flora-and-flower-care/raw/master/.md.images/ha-lovelace-plant-card.png" width="40%" height="auto" alt="Home Assistant lovelace card">
+
+
 
 [license-shield]:https://img.shields.io/github/license/r-renato/hass-xiaomi-mi-flora-and-flower-care
 [buymecoffee]: https://www.buymeacoffee.com/0D3WbkKrn
