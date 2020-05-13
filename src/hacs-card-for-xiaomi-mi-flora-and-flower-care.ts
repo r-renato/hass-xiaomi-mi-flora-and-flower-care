@@ -20,7 +20,7 @@ import {CardConfig, FloraCarePlant, FloraCarePlantRanges, Sensor} from "./types"
 
 import style from './style';
 
-console.info("%c XIAOMI-MI-FLORA-AND-FLOWER-CARE-CARD %c 1.1.0 ", "color: white; background: green; font-weight: 700;", "color: coral; background: white; font-weight: 700;");
+console.info("%c XIAOMI-MI-FLORA-AND-FLOWER-CARE-CARD %c 1.2.0 ", "color: white; background: green; font-weight: 700;", "color: coral; background: white; font-weight: 700;");
 
 @customElement("xiaomi-mi-flora-and-flower-care-card")
 class FlowerCareCard extends LitElement {
@@ -160,22 +160,22 @@ class FlowerCareCard extends LitElement {
                 ${moinsture ? this.computeContentItem(
                 moinsture,
                 this._floraRanges.min_soil_moist, this._floraRanges.max_soil_moist,
-                this.computeAttributeClass( this._floraCare.attributes.problem, this.MOINSTURE )
+                this.computeAttributeClass( this._floraCare.attributes.problem, moinsture, this.MOINSTURE )
                 ) : html``}
                 ${conductivity ? this.computeContentItem(
                 conductivity,
                 this._floraRanges.min_soil_ec, this._floraRanges.max_soil_ec,
-                this.computeAttributeClass( this._floraCare.attributes.problem, this.CONDUCTIVITY )
+                this.computeAttributeClass( this._floraCare.attributes.problem, conductivity, this.CONDUCTIVITY )
                 ): html``}
                 ${brightness ? this.computeContentItem(
                 brightness,
                 this._floraRanges.min_light_lux, this._floraRanges.max_light_lux,
-                this.computeAttributeClass( this._floraCare.attributes.problem, this.BRIGHTNESS )
+                this.computeAttributeClass( this._floraCare.attributes.problem, brightness, this.BRIGHTNESS )
                 ): html``}
                 ${temperature ? this.computeContentItem(
                 temperature,
                 this._floraRanges.min_temp, this._floraRanges.max_temp,
-                this.computeAttributeClass( this._floraCare.attributes.problem, this.TEMPERATURE )
+                this.computeAttributeClass( this._floraCare.attributes.problem, temperature, this.TEMPERATURE )
                 ): html``}
             `;
     }
@@ -200,7 +200,8 @@ class FlowerCareCard extends LitElement {
                     <ha-icon icon="${sensor.attributes.icon}"></ha-icon>
                 </div>
                 <div class="${problemClass}">
-                    ${sensor.state} ${sensor.attributes.unit_of_measurement}
+                    ${sensor.state.indexOf("unknown") === -1 
+                        ? sensor.state + " " + sensor.attributes.unit_of_measurement : "n/a"}
                 </div>
                 <div class="uom">
                 ${null !== min && null !== max ? html`${min}-${max}` : html``}
@@ -252,6 +253,7 @@ class FlowerCareCard extends LitElement {
     }
 
     computeHeader() {
+        let batterySensor = this.getSensor( this._floraCare.attributes.sensors[ this.BATTERY ]) ;
         return html`
             <table is="s-table-lite">
                 <tbody>
@@ -278,11 +280,9 @@ class FlowerCareCard extends LitElement {
                             </div>                            
                         </td>                        
                         <td>
-                        ${this.computeContentItem(
-            this.getSensor( this._floraCare.attributes.sensors[ this.BATTERY ]),
-            null, null,
-            this.computeAttributeClass( this._floraCare.attributes.problem, this.BATTERY )
-        )}  
+                        ${this.computeContentItem(batterySensor, null, null, 
+                            this.computeAttributeClass( this._floraCare.attributes.problem, batterySensor, this.BATTERY )
+                        )}  
                         </td>
                     </tr>
                     <tr>
@@ -299,8 +299,9 @@ class FlowerCareCard extends LitElement {
      * @param attr
      * @returns {string}
      */
-    computeAttributeClass(problem, attr) {
-        return problem.indexOf(attr) === -1 ? "" : "problem";
+    computeAttributeClass(problem, state, attr) {
+        return problem.indexOf(attr) === -1
+            && undefined !== state && state.state.indexOf("unknown") === -1 ? "" : "problem";
     }
 
     /*    private _handleTap(): void {

@@ -3,16 +3,20 @@
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## [1.2.0] Unreleased
+## [1.2.1] Unreleased
 ### Fixed
 
 ### Added
 
 ### Changed
 
+## [1.2.0] 2020-03-27
+### Changed
+- Sensor state red colored when the state is unknown
+
 ## [1.1.1] 2020-03-27
 ### Fixed
-- minor bug fix
+- Minor bug fix
 
 ## [1.1.0]
 ### Fixed

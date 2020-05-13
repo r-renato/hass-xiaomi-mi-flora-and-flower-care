@@ -1,10 +1,12 @@
-The Home Assistant custom component use Flower Care&trade; Smart Monitor to retrieve flower information (http://www.huahuacaocao.com/product).
-HuaHuaCaoCao, in Chinese which means flowers & Plants.
+# Xiaomi mi flora and Flower care integration
+
+The Home Assistant custom component uses Flower Care&trade; Smart Monitor to retrieve flower information (http://www.huahuacaocao.com/product).
+HuaHuaCaoCao  means flowers & Plants in Chinese.
 
 [![hacs_badge](https://img.shields.io/badge/HACS-Default-orange.svg)](https://github.com/custom-components/hacs)
 
-[![License][license-shield]](LICENSE.md)
-[![Total alerts](https://img.shields.io/lgtm/alerts/g/r-renato/ha-card-waze-travel-time.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/r-renato/hass-xiaomi-mi-flora-and-flower-care/alerts/)
+[![License][license-shield]](LICENSE)
+[![Total alerts](https://img.shields.io/lgtm/alerts/g/r-renato/hass-xiaomi-mi-flora-and-flower-care.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/r-renato/hass-xiaomi-mi-flora-and-flower-care/alerts/)
 [![Language grade: Python](https://img.shields.io/lgtm/grade/python/g/r-renato/hass-xiaomi-mi-flora-and-flower-care.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/r-renato/hass-xiaomi-mi-flora-and-flower-care/context:python)
 
 [![BuyMeCoffee][buymecoffeebadge]][buymecoffee]
@@ -13,13 +15,17 @@ Need to register to Flower Care&trade; Smart Monitor App
 <a href="https://play.google.com/store/apps/details?id=com.huahuacaocao.flowercare&hl=it" target="_blank">on Google Android devices</a> or 
 <a href="https://apps.apple.com/it/app/flower-care/id1095274672" target="_blank">on Apple iOS devices</a> to use the component.
 
-## Features
+_Home Assistant Plant monitor extended component, integrated with Flora care application plant informations._
 
-* Xiaomi mi flora sensor and Flower Care&trade; Smart Monitor integration
-* Sensor optimal range applied using plant ID
-* Retrieve general plant information
-* Retrieve information to plant maintenance
-* Retrieve plant image
+<img src="https://gitlab.com/rrenato/hass-xiaomi-mi-flora-and-flower-care/raw/master/.md.images/ha-lovelace-plant-card.png"  width="40%" height="40%" alt="Home Assistant lovelace card">
+
+## Manual installation
+
+1. Using the tool of choice, open the directory (folder) of your HA configuration (there you can find `configuration.yaml`).
+2. If you do not have a `custom_components` directory (folder) there, you need to create it.
+3. In the `custom_components` directory (folder) create a new folder called `huahuacaocao`.
+4. Download _all_ the files from the `custom_components/huahuacaocao/` directory (folder) in this repository.
+5. Place the files you downloaded in the new directory (folder) you created.
 
 ## Configuration
 
@@ -55,7 +61,7 @@ huahuacaocao:
 >(string)(Required)<br>Name to use in the frontend.
 
 **sensors**
->(list)(Optional)<br>List of sensor measure entities.
+>(list)(Required)<br>List of sensor measure entities.
 
 >**moisture**
 >>(string)(Optional)<br>Moisture of the plant. Measured in %. Can have a min and max value set optionally.
@@ -178,8 +184,6 @@ style:|
       --content-background: rgba(50,50,50,0.75);
    }
 ```
-
-<img src="https://gitlab.com/rrenato/hass-xiaomi-mi-flora-and-flower-care/raw/master/.md.images/ha-lovelace-plant-card.png"  width="40%" height="40%" alt="Home Assistant lovelace card">
 
 [license-shield]:https://img.shields.io/github/license/r-renato/hass-xiaomi-mi-flora-and-flower-care
 [buymecoffee]: https://www.buymeacoffee.com/0D3WbkKrn
