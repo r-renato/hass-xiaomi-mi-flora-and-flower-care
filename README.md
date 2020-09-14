@@ -134,8 +134,19 @@ Home Assistant Flora Panel
 <img src="https://gitlab.com/rrenato/hass-xiaomi-mi-flora-and-flower-care/raw/master/.md.images/ha-plant-panel.png"  width="40%" height="40%" alt="Home Assistant plant panel">
 
 ## Lovelace Configuration
+To add , perform the following:
 
-Import the card using:
+1. In the Home Assistant UI, go to `Configuration >> Lovelace Dashboards >> Resources` tab
+2. Click the `+` button
+3. Under `url`, copy and paste the following URL:
+
+ ```
+ /hacsfiles/hacs-card-for-xiaomi-mi-flora-and-flower-care/hacs-card-for-xiaomi-mi-flora-and-flower-care.js
+ ```
+
+4. Under Resource Type, select 'Javascript Module'.
+
+If you are using YAML to manage your Lovelace UI, import the card using:
 
 ```yaml
 resources:
