@@ -1,6 +1,6 @@
 # Xiaomi mi flora and Flower care integration
 
-The Home Assistant custom component uses Flower Care&trade; Smart Monitor to retrieve flower information (http://www.huahuacaocao.com/product).
+The Home Assistant custom component uses Flower Care&trade; Smart Monitor to retrieve flower information (https://github.com/hacs/integration).
 HuaHuaCaoCao  means flowers & Plants in Chinese.
 
 [![hacs_badge](https://img.shields.io/badge/HACS-Default-orange.svg)](http://www.huahuacaocao.com/product)
