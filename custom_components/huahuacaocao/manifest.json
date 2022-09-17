@@ -4,5 +4,6 @@
   "documentation": "https://github.com/r-renato/hass-xiaomi-mi-flora-and-flower-care.git",
   "dependencies": [],
   "codeowners": ["@r-renato"],
-  "requirements": []
+  "requirements": [],
+  "version": "1.2.1" 
 }
